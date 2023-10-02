@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  @font-face {
+    font-family: 'R-Flex Bold';
+    src: url('/public/assets/fonts/RFlex-Bold.ttf');
+  }
+  @font-face {
+    font-family: 'R-Flex';
+    src: url('/public/assets/fonts/RFlexRegular.ttf');
+  }
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  font-feature-settings: 'cv11';
+}
