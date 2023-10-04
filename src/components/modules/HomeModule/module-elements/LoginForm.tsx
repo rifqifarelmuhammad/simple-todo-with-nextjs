@@ -4,22 +4,24 @@ import { GeneralAuthProps, AuthRequestInterface } from '../interface'
 import { useAuthContext } from '@contexts'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { loginSchema } from '@schemas'
-import { getErrorMessage } from '@utils'
-import { useToast } from 'compfest-silicon'
+import { getErrorMessage, getToast } from '@utils'
 import { AuthResponseInterface } from 'src/components/contexts/AuthContext/interface'
+import { useState } from 'react'
 
 export const LoginForm: React.FC<GeneralAuthProps> = ({ setStatusType }) => {
   const {
     register,
     handleSubmit,
     watch,
-    reset,
     formState: { errors },
   } = useForm<AuthRequestInterface>({ resolver: zodResolver(loginSchema) })
   const { httpFetch, setAuthenticatedUser } = useAuthContext()
+  const [ isLoading, setIsLoading ] = useState<boolean>(false)
 
   const handleLoginButton = async (body: AuthRequestInterface) => {
     try {
+      setIsLoading(true)
+
       const {
         responseCode: _responseCode,
         responseStatus: _responseStatus,
@@ -36,15 +38,16 @@ export const LoginForm: React.FC<GeneralAuthProps> = ({ setStatusType }) => {
       localStorage.setItem('AT', accessToken)
       setAuthenticatedUser(user)
       setStatusType('AUTHENTICATED')
-      reset()
     } catch (error) {
       const { statusCode } = getErrorMessage(error)
 
       if (statusCode === 401) {
-        useToast.error('Invalid Email or Password')
+        getToast({message: 'Invalid Email or Password'})
       } else {
-        useToast.error('Oops, something wrong! Please wait a moment')
+        getToast({})
       }
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -71,10 +74,10 @@ export const LoginForm: React.FC<GeneralAuthProps> = ({ setStatusType }) => {
       <div className="flex justify-center pt-3">
         <CustomButton
           type="submit"
-          isDisabled={!watch('email') || !watch('password')}
+          isDisabled={!watch('email') || !watch('password') || isLoading}
           className="rounded-lg w-full text-white font-semibold h-9 bg-lime-600 hover:bg-lime-500"
         >
-          Login
+          {!watch('email') || !watch('password') || !isLoading? 'Login' : 'Loading'}
         </CustomButton>
       </div>
     </form>

@@ -8,9 +8,8 @@ import {
   HttpFetchInterface,
   HttpFetchResponseInterface,
 } from './interface'
-import { getAccessToken, getErrorMessage, removeAccessToken } from '@utils'
+import { getAccessToken, getErrorMessage, getToast, removeAccessToken } from '@utils'
 import { useRouter } from 'next/router'
-import { useToast } from 'compfest-silicon'
 
 export const AuthContext = createContext({} as AuthContextInterface)
 
@@ -75,7 +74,7 @@ export const AuthContextProvider: React.FC<AuthContextProviderProps> = ({
           if (statusCode === 401) {
             removeAccessToken(router)
           } else {
-            useToast.error('Oops, something wrong! Please wait a moment')
+            getToast({})
           }
         }
       }

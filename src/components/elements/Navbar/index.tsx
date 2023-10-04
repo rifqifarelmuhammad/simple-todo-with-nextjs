@@ -11,6 +11,7 @@ export const Navbar: React.FC = () => {
   const handleEditProfile = () => {
     router.push('/edit-profile')
   }
+  console.log(user)
 
   if (user)
     return (
@@ -19,7 +20,7 @@ export const Navbar: React.FC = () => {
           <div className="w-3/4 pl-10 flex flex-row gap-3 items-center">
             <div className="rounded-full bg-white w-16 h-16 relative aspect-square">
               <Image
-                src={getImage(user?.avatar as string)}
+                src={getImage((user?.avatar !== '')? user.avatar : (process.env.NEXT_PUBLIC_DEFAULT_AVATAR as string))}
                 alt="user's avatar"
                 fill
                 sizes="none"

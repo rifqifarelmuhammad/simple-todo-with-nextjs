@@ -2,8 +2,7 @@ import { useAuthContext } from '@contexts'
 import { useEffect, useState } from 'react'
 import { TodoInterface, TodolistProps } from '../interface'
 import { TodoCard } from '../module-elements/TodoCard'
-import { ModalBody, ModalHeader, useToast } from 'compfest-silicon'
-import { getErrorMessage, removeAccessToken } from '@utils'
+import { getErrorMessage, getToast, removeAccessToken } from '@utils'
 import { useRouter } from 'next/router'
 import {
   Button,
@@ -11,6 +10,8 @@ import {
   ModalCloseButton,
   ModalContent,
   ModalOverlay,
+  ModalHeader,
+  ModalBody
 } from '@chakra-ui/react'
 import { CreateTodoForm } from '../module-elements/CreateTodoForm'
 
@@ -43,7 +44,7 @@ export const Home: React.FC = () => {
       if (statusCode === 401) {
         removeAccessToken(router)
       } else {
-        useToast.error('Oops, something wrong! Please wait a moment')
+        getToast({})
       }
     }
   }, [])
@@ -76,7 +77,7 @@ export const Home: React.FC = () => {
       <Modal isOpen={isModalOpen} onClose={handleIsModalOpen}>
         <ModalOverlay />
 
-        <ModalContent className="flex flex-col gap-4 py-6 px-6">
+        <ModalContent className="flex flex-col py-6 px-6">
           <ModalCloseButton />
 
           <ModalHeader>

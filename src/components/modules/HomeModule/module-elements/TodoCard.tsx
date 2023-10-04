@@ -2,8 +2,7 @@ import { getFormattedDatetime } from '../constant'
 import { TodoCardProps, TodoInterface } from '../interface'
 import { useAuthContext } from '@contexts'
 import { useState } from 'react'
-import { getErrorMessage, removeAccessToken } from '@utils'
-import { useToast } from 'compfest-silicon'
+import { getErrorMessage, getToast, removeAccessToken } from '@utils'
 import { useRouter } from 'next/router'
 import { CustomButton } from '@elements'
 
@@ -34,20 +33,14 @@ export const TodoCard: React.FC<TodoCardProps> = ({
       todo.isFinished = isFinished
       todo.updatedAt = updatedAt
       setState(!state)
-      useToast.success('Todo has been updated')
+      getToast({ type: 'success', message: 'Todo has been updated' })
     } catch (error) {
       const { statusCode, message } = getErrorMessage(error)
 
       if (statusCode === 400) {
-        useToast.error('Todo not found!')
-      } else if (statusCode === 401) {
-        if (message === 'Invalid Todo') {
-          useToast.error('Todo is not yours!')
-        } else {
-          removeAccessToken(router)
-        }
+        getToast({ message: 'Todo not found!' })
       } else {
-        useToast.error('Oops, something wrong! Please wait a moment')
+        handleErrorUpdateDeleteTodo(statusCode, message)
       }
     }
   }
@@ -65,19 +58,23 @@ export const TodoCard: React.FC<TodoCardProps> = ({
 
       const updatedTodos = todos.filter((data) => data.id !== todo.id)
       setTodos(updatedTodos)
-      useToast.success('Todo has been deleted')
+      getToast({ type: 'success', message: 'Todo has been deleted' })
     } catch (error) {
       const { statusCode, message } = getErrorMessage(error)
 
-      if (statusCode === 401) {
-        if (message === 'Invalid Todo') {
-          useToast.error('Todo is not yours!')
-        } else {
-          removeAccessToken(router)
-        }
+      handleErrorUpdateDeleteTodo(statusCode, message)
+    }
+  }
+
+  const handleErrorUpdateDeleteTodo = (statusCode: number, message: string) => {
+    if (statusCode === 401) {
+      if (message === 'Invalid Todo') {
+        getToast({ message: 'Todo is not yours!' })
       } else {
-        useToast.error('Oops, something wrong! Please wait a moment')
+        removeAccessToken(router)
       }
+    } else {
+      getToast({})
     }
   }
 

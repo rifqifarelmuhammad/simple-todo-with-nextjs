@@ -3,16 +3,17 @@ import { useAuthContext } from '@contexts'
 import { CustomButton, CustomTextInput } from '@elements'
 import { ChangeEvent, useState } from 'react'
 import { Tab, TabList, Tabs } from '@chakra-ui/react'
-import { EditProfileFormProps, EditProfileRequestInterface } from './interface'
+import { EditProfileFormProps, DeleteAvatarRequestInterface } from './interface'
 import { IMAGE_FILE_TYPE } from './constant'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { editProfileSchema } from '@schemas'
-import { getToast } from '@utils'
+import { getErrorMessage, getToast, removeAccessToken } from '@utils'
 import { useRouter } from 'next/router'
+import { FinalizeUser } from 'src/components/contexts/AuthContext/interface'
 
 export const EditProfileModule: React.FC = () => {
   const router = useRouter()
-  const { httpFetch } = useAuthContext()
+  const { httpFetch, setAuthenticatedUser, user } = useAuthContext()
   const {
     register,
     handleSubmit,
@@ -24,6 +25,7 @@ export const EditProfileModule: React.FC = () => {
   const [selectedFile, setSelectedFile] = useState<File>()
   const [invalidFileType, setInvalidFileType] = useState<boolean>(false)
   const [isUpdateAvatar, setIsUpdateAvatar] = useState<boolean>(true)
+  const [ isLoading, setIsLoading ] = useState<boolean>(false)
 
   const onChangeFile = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
@@ -58,31 +60,21 @@ export const EditProfileModule: React.FC = () => {
       formData.append('file', selectedFile)
     }
 
-    try {
-      const {
-        responseCode: _responseCode,
-        responseStatus: _responseStatus,
-        responseMessage: _responseMessage,
-      } = await httpFetch({
-        method: 'patch',
-        url: '/user/profile',
-        body: formData,
-      })
-
-      getToast({ type: 'success', message: 'Profile has been updated' })
-      router.push('/')
-    } catch (error) {
-      getToast({})
-    }
+    await handleUpdateProfile(formData)
   }
 
   const handleDeleteAvatarButton = async () => {
-    const body: EditProfileRequestInterface = {
-      name: '',
+    const body: DeleteAvatarRequestInterface = {
       isAvatarDeleted: 'TRUE',
     }
 
+    await handleUpdateProfile(body)
+  }
+
+  const handleUpdateProfile = async (body: DeleteAvatarRequestInterface | FormData) => {
     try {
+      setIsLoading(true)
+
       const {
         responseCode: _responseCode,
         responseStatus: _responseStatus,
@@ -93,10 +85,29 @@ export const EditProfileModule: React.FC = () => {
         body: body,
       })
 
+      if (body instanceof FormData) {
+
+      } else {
+        const updatedUser: FinalizeUser = {
+          avatar: '',
+          name: user?.name ?? ''
+        }
+
+        setAuthenticatedUser(updatedUser)
+      }
+
       getToast({ type: 'success', message: 'Profile has been updated' })
       router.push('/')
     } catch (error) {
-      getToast({})
+      const { statusCode } = getErrorMessage(error)
+
+      if (statusCode === 401) {
+        removeAccessToken(router)
+      } else {
+        getToast({})
+      }
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -177,9 +188,9 @@ export const EditProfileModule: React.FC = () => {
             <CustomButton
               className="w-full bg-lime-600 hover:bg-lime-500 py-2"
               type="submit"
-              isDisabled={!watch('name') && (!isUpdateAvatar || !selectedFile)}
+              isDisabled={!watch('name') && (!isUpdateAvatar || !selectedFile) || isLoading}
             >
-              Save
+              {!watch('name') && (!isUpdateAvatar || !selectedFile) || !isLoading ? 'Save' : 'Loading'}
             </CustomButton>
           </div>
         </form>

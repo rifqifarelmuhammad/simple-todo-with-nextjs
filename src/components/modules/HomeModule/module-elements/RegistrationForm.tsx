@@ -4,10 +4,10 @@ import { RegistrationRequestInterface, GeneralAuthProps } from '../interface'
 import { useAuthContext } from '@contexts'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { registrationSchema } from '@schemas'
-import { getErrorMessage } from '@utils'
-import { useToast } from 'compfest-silicon'
+import { getErrorMessage, getToast } from '@utils'
 import { AuthResponseInterface } from 'src/components/contexts/AuthContext/interface'
 import { CustomButton } from '@elements'
+import { useState } from 'react'
 
 export const RegistrationForm: React.FC<GeneralAuthProps> = ({
   setStatusType,
@@ -16,15 +16,17 @@ export const RegistrationForm: React.FC<GeneralAuthProps> = ({
     register,
     handleSubmit,
     watch,
-    reset,
     formState: { errors },
   } = useForm<RegistrationRequestInterface>({
     resolver: zodResolver(registrationSchema),
   })
   const { httpFetch, setAuthenticatedUser } = useAuthContext()
+  const [ isLoading, setIsLoading ] = useState<boolean>(false)
 
   const handleRegisterButton = async (body: RegistrationRequestInterface) => {
     try {
+      setIsLoading(true)
+
       const {
         responseCode: _responseCode,
         responseStatus: _responseStatus,
@@ -41,17 +43,18 @@ export const RegistrationForm: React.FC<GeneralAuthProps> = ({
       localStorage.setItem('AT', accessToken)
       setAuthenticatedUser(user)
       setStatusType('AUTHENTICATED')
-      reset()
     } catch (error) {
       const { statusCode } = getErrorMessage(error)
 
       if (statusCode === 409) {
-        useToast.error('User already exists')
+        getToast({message: 'User already exists'})
       } else if (statusCode === 400) {
-        useToast.error('Invalid email address')
+        getToast({message: 'Invalid email address'})
       } else {
-        useToast.error('Oops, something wrong! Please wait a moment')
+        getToast({})
       }
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -97,11 +100,12 @@ export const RegistrationForm: React.FC<GeneralAuthProps> = ({
             !watch('name') ||
             !watch('email') ||
             !watch('password') ||
-            !watch('confirmationPassword')
+            !watch('confirmationPassword') ||
+            isLoading
           }
           className="bg-lime-600 hover:bg-lime-500 rounded-lg w-full text-white font-semibold h-9"
         >
-          Register
+          {!watch('name') || !watch('name') || !watch('password') || !watch('confirmationPassword') || !isLoading? 'Register' : 'Loading'}
         </CustomButton>
       </div>
     </form>

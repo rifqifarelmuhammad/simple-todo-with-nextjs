@@ -8,13 +8,15 @@ import { CustomButton, CustomTextInput } from '@elements'
 import { createTodoSchema } from '@schemas'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useAuthContext } from '@contexts'
-import { useToast } from 'compfest-silicon'
+import { getErrorMessage, getToast, removeAccessToken } from '@utils'
+import { useRouter } from 'next/router'
 
 export const CreateTodoForm: React.FC<CreateTodoProps> = ({
   todos,
   setTodos,
   handleIsModalOpen,
 }) => {
+  const router = useRouter()
   const {
     register,
     handleSubmit,
@@ -42,7 +44,13 @@ export const CreateTodoForm: React.FC<CreateTodoProps> = ({
       setTodos(todos)
       handleIsModalOpen()
     } catch (error) {
-      useToast.error('Oops, something wrong! Please wait a moment')
+      const { statusCode } = getErrorMessage(error)
+      
+      if (statusCode === 401) {
+        removeAccessToken(router)
+      } else {
+        getToast({})
+      }
     }
   }
 
