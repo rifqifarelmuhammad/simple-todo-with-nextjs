@@ -21,7 +21,7 @@ export const RegistrationForm: React.FC<GeneralAuthProps> = ({
     resolver: zodResolver(registrationSchema),
   })
   const { httpFetch, setAuthenticatedUser } = useAuthContext()
-  const [ isLoading, setIsLoading ] = useState<boolean>(false)
+  const [isLoading, setIsLoading] = useState<boolean>(false)
 
   const handleRegisterButton = async (body: RegistrationRequestInterface) => {
     try {
@@ -47,9 +47,9 @@ export const RegistrationForm: React.FC<GeneralAuthProps> = ({
       const { statusCode } = getErrorMessage(error)
 
       if (statusCode === 409) {
-        getToast({message: 'User already exists'})
+        getToast({ message: 'User already exists' })
       } else if (statusCode === 400) {
-        getToast({message: 'Invalid email address'})
+        getToast({ message: 'Invalid email address' })
       } else {
         getToast({})
       }
@@ -105,7 +105,13 @@ export const RegistrationForm: React.FC<GeneralAuthProps> = ({
           }
           className="bg-lime-600 hover:bg-lime-500 rounded-lg w-full text-white font-semibold h-9"
         >
-          {!watch('name') || !watch('name') || !watch('password') || !watch('confirmationPassword') || !isLoading? 'Register' : 'Loading'}
+          {!watch('name') ||
+          !watch('name') ||
+          !watch('password') ||
+          !watch('confirmationPassword') ||
+          !isLoading
+            ? 'Register'
+            : 'Loading'}
         </CustomButton>
       </div>
     </form>

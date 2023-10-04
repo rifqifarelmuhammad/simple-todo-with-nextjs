@@ -25,7 +25,7 @@ export const EditProfileModule: React.FC = () => {
   const [selectedFile, setSelectedFile] = useState<File>()
   const [invalidFileType, setInvalidFileType] = useState<boolean>(false)
   const [isUpdateAvatar, setIsUpdateAvatar] = useState<boolean>(true)
-  const [ isLoading, setIsLoading ] = useState<boolean>(false)
+  const [isLoading, setIsLoading] = useState<boolean>(false)
 
   const onChangeFile = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
@@ -71,7 +71,9 @@ export const EditProfileModule: React.FC = () => {
     await handleUpdateProfile(body)
   }
 
-  const handleUpdateProfile = async (body: DeleteAvatarRequestInterface | FormData) => {
+  const handleUpdateProfile = async (
+    body: DeleteAvatarRequestInterface | FormData
+  ) => {
     try {
       setIsLoading(true)
 
@@ -86,11 +88,12 @@ export const EditProfileModule: React.FC = () => {
       })
 
       if (body instanceof FormData) {
-
+        console.log(body)
+        // console.log(new FormData(body))
       } else {
         const updatedUser: FinalizeUser = {
           avatar: '',
-          name: user?.name ?? ''
+          name: user?.name as string,
         }
 
         setAuthenticatedUser(updatedUser)
@@ -188,9 +191,15 @@ export const EditProfileModule: React.FC = () => {
             <CustomButton
               className="w-full bg-lime-600 hover:bg-lime-500 py-2"
               type="submit"
-              isDisabled={!watch('name') && (!isUpdateAvatar || !selectedFile) || isLoading}
+              isDisabled={
+                (!watch('name') && (!isUpdateAvatar || !selectedFile)) ||
+                isLoading
+              }
             >
-              {!watch('name') && (!isUpdateAvatar || !selectedFile) || !isLoading ? 'Save' : 'Loading'}
+              {(!watch('name') && (!isUpdateAvatar || !selectedFile)) ||
+              !isLoading
+                ? 'Save'
+                : 'Loading'}
             </CustomButton>
           </div>
         </form>

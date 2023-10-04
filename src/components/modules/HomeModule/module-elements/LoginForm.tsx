@@ -16,7 +16,7 @@ export const LoginForm: React.FC<GeneralAuthProps> = ({ setStatusType }) => {
     formState: { errors },
   } = useForm<AuthRequestInterface>({ resolver: zodResolver(loginSchema) })
   const { httpFetch, setAuthenticatedUser } = useAuthContext()
-  const [ isLoading, setIsLoading ] = useState<boolean>(false)
+  const [isLoading, setIsLoading] = useState<boolean>(false)
 
   const handleLoginButton = async (body: AuthRequestInterface) => {
     try {
@@ -42,7 +42,7 @@ export const LoginForm: React.FC<GeneralAuthProps> = ({ setStatusType }) => {
       const { statusCode } = getErrorMessage(error)
 
       if (statusCode === 401) {
-        getToast({message: 'Invalid Email or Password'})
+        getToast({ message: 'Invalid Email or Password' })
       } else {
         getToast({})
       }
@@ -77,7 +77,9 @@ export const LoginForm: React.FC<GeneralAuthProps> = ({ setStatusType }) => {
           isDisabled={!watch('email') || !watch('password') || isLoading}
           className="rounded-lg w-full text-white font-semibold h-9 bg-lime-600 hover:bg-lime-500"
         >
-          {!watch('email') || !watch('password') || !isLoading? 'Login' : 'Loading'}
+          {!watch('email') || !watch('password') || !isLoading
+            ? 'Login'
+            : 'Loading'}
         </CustomButton>
       </div>
     </form>

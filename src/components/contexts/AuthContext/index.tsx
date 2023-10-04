@@ -8,7 +8,12 @@ import {
   HttpFetchInterface,
   HttpFetchResponseInterface,
 } from './interface'
-import { getAccessToken, getErrorMessage, getToast, removeAccessToken } from '@utils'
+import {
+  getAccessToken,
+  getErrorMessage,
+  getToast,
+  removeAccessToken,
+} from '@utils'
 import { useRouter } from 'next/router'
 
 export const AuthContext = createContext({} as AuthContextInterface)

@@ -45,7 +45,7 @@ export const CreateTodoForm: React.FC<CreateTodoProps> = ({
       handleIsModalOpen()
     } catch (error) {
       const { statusCode } = getErrorMessage(error)
-      
+
       if (statusCode === 401) {
         removeAccessToken(router)
       } else {
