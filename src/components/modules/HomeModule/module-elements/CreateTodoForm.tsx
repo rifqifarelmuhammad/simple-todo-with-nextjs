@@ -5,7 +5,7 @@ import {
   CreateTodoProps,
 } from '../interface'
 import { CustomButton, CustomTextInput } from '@elements'
-import { createTodoSchema } from 'src/components/schemas/todo.schema'
+import { createTodoSchema } from '@schemas'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useAuthContext } from '@contexts'
 import { useToast } from 'compfest-silicon'

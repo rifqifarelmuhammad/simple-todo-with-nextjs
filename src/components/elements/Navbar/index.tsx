@@ -2,11 +2,15 @@ import { useAuthContext } from '@contexts'
 import { CustomButton } from '../CustomButton'
 import { getImage } from '@utils'
 import Image from 'next/image'
+import { useRouter } from 'next/router'
 
 export const Navbar: React.FC = () => {
   const { user } = useAuthContext()
+  const router = useRouter()
 
-  const handleEditProfile = () => {}
+  const handleEditProfile = () => {
+    router.push('/edit-profile')
+  }
 
   if (user)
     return (
