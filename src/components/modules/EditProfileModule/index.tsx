@@ -9,11 +9,11 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { editProfileSchema } from '@schemas'
 import { getErrorMessage, getToast, removeAccessToken } from '@utils'
 import { useRouter } from 'next/router'
-import { FinalizeUser } from 'src/components/contexts/AuthContext/interface'
+import { AuthenticatedUserInterface, FinalizeUser } from 'src/components/contexts/AuthContext/interface'
 
 export const EditProfileModule: React.FC = () => {
   const router = useRouter()
-  const { httpFetch, setAuthenticatedUser, user } = useAuthContext()
+  const { httpFetch, setAuthenticatedUser } = useAuthContext()
   const {
     register,
     handleSubmit,
@@ -81,23 +81,19 @@ export const EditProfileModule: React.FC = () => {
         responseCode: _responseCode,
         responseStatus: _responseStatus,
         responseMessage: _responseMessage,
-      } = await httpFetch({
+        user
+      } = await httpFetch<AuthenticatedUserInterface>({
         method: 'patch',
         url: '/user/profile',
         body: body,
       })
 
-      if (body instanceof FormData) {
-        console.log(body)
-        // console.log(new FormData(body))
-      } else {
-        const updatedUser: FinalizeUser = {
-          avatar: '',
-          name: user?.name as string,
-        }
-
-        setAuthenticatedUser(updatedUser)
+      const updatedUser: FinalizeUser = {
+        avatar: user.avatar,
+        name: user.name,
       }
+
+      setAuthenticatedUser(updatedUser)
 
       getToast({ type: 'success', message: 'Profile has been updated' })
       router.push('/')

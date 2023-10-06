@@ -5,7 +5,7 @@ export const removeAccessToken = (router: NextRouter) => {
   if (typeof window !== 'undefined') {
     localStorage.removeItem('AT')
   }
-
+  
   getToast({})
   router.push('/')
 }

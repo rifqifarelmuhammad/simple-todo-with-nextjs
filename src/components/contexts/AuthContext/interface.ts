@@ -8,7 +8,7 @@ export interface AuthContextInterface {
   httpFetch: <T>(
     props: HttpFetchInterface
   ) => Promise<HttpFetchResponseInterface & T>
-  setAuthenticatedUser(user: FinalizeUser): void
+  setAuthenticatedUser(user?: FinalizeUser): void
   user: FinalizeUser | undefined
 }
 

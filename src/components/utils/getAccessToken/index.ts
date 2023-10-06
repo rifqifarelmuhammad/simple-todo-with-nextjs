@@ -5,15 +5,20 @@ import { ParseJwtInterface } from './interface'
 export const getAccessToken = async (router: NextRouter) => {
   try {
     const token = localStorage.getItem('AT')
-    if (token && validateJWTExp(token)) {
+
+    if (token) {
       if (validateJWTExp(token)) {
         return `Bearer ${token}`
+      } else {
+        throw new Error('Access Token is expired')
       }
+    } else {
+      return undefined
     }
-
-    throw new Error()
-  } catch (error) {
-    removeAccessToken(router)
+  } catch (error: any) {
+    if (error.message === 'Invalid JWT Token') {
+      removeAccessToken(router)
+    }
   }
 }
 

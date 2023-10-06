@@ -1,7 +1,6 @@
 import { getFormattedDatetime } from '../constant'
 import { TodoCardProps, TodoInterface } from '../interface'
 import { useAuthContext } from '@contexts'
-import { useState } from 'react'
 import { getErrorMessage, getToast, removeAccessToken } from '@utils'
 import { useRouter } from 'next/router'
 import { CustomButton } from '@elements'
@@ -14,7 +13,6 @@ export const TodoCard: React.FC<TodoCardProps> = ({
   const router = useRouter()
   const { httpFetch } = useAuthContext()
   const formattedDateTime = getFormattedDatetime({ date: todo.updatedAt })
-  const [state, setState] = useState<boolean>(false)
 
   const handleUpdateTodo = async () => {
     try {
@@ -32,7 +30,10 @@ export const TodoCard: React.FC<TodoCardProps> = ({
       const { isFinished, updatedAt } = data
       todo.isFinished = isFinished
       todo.updatedAt = updatedAt
-      setState(!state)
+
+      const updatedTodos = filterTodos()
+      updatedTodos.unshift(todo)
+      setTodos(updatedTodos)
       getToast({ type: 'success', message: 'Todo has been updated' })
     } catch (error) {
       const { statusCode, message } = getErrorMessage(error)
@@ -56,8 +57,7 @@ export const TodoCard: React.FC<TodoCardProps> = ({
         url: `/todo/${todo.id}`,
       })
 
-      const updatedTodos = todos.filter((data) => data.id !== todo.id)
-      setTodos(updatedTodos)
+      setTodos(filterTodos())
       getToast({ type: 'success', message: 'Todo has been deleted' })
     } catch (error) {
       const { statusCode, message } = getErrorMessage(error)
@@ -76,6 +76,10 @@ export const TodoCard: React.FC<TodoCardProps> = ({
     } else {
       getToast({})
     }
+  }
+
+  const filterTodos = () => {
+    return todos.filter((data) => data.id !== todo.id)
   }
 
   return (

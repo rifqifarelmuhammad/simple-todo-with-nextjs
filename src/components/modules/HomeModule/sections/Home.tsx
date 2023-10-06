@@ -31,7 +31,7 @@ export const Home: React.FC = () => {
           todos,
         } = await httpFetch<TodolistProps>({
           method: 'get',
-          url: '/todo/desc',
+          url: '/todo',
         })
 
         setData(todos)
