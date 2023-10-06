@@ -17,7 +17,7 @@ export const Navbar: React.FC = () => {
       const {
         responseCode: _responseCode,
         responseStatus: _responseStatus,
-        responseMessage: _responseMessage
+        responseMessage: _responseMessage,
       } = await httpFetch({
         method: 'patch',
         url: '/auth/logout',
