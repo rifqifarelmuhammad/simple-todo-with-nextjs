@@ -2,6 +2,7 @@ import { CustomTextInputProps } from './interface'
 import { Input, Button } from '@chakra-ui/react'
 import { useState, forwardRef } from 'react'
 import { AiFillEyeInvisible, AiFillEye } from 'react-icons/ai'
+import { useWindowSize } from 'usehooks-ts'
 
 export const CustomTextInput = forwardRef<
   HTMLInputElement,
@@ -11,6 +12,7 @@ export const CustomTextInput = forwardRef<
     { label, placeholder, type = 'text', error, readonly = false, ...props },
     ref
   ) => {
+    const { width } = useWindowSize()
     const [isVisible, setIsVisible] = useState<boolean>(false)
 
     const handleButtonIsVisible = () => {
@@ -19,7 +21,7 @@ export const CustomTextInput = forwardRef<
 
     return (
       <div className="flex flex-col gap-1">
-        {label && <p>{label}</p>}
+        {label && <p className='text-base md:text-xl'>{label}</p>}
 
         <div className={type === 'password' ? 'relative' : ''}>
           <Input
@@ -27,7 +29,9 @@ export const CustomTextInput = forwardRef<
             ref={ref}
             type={type === 'text' ? 'text' : isVisible ? 'text' : 'password'}
             placeholder={placeholder}
-            className="w-full h-8 rounded-lg px-2 text-[#202F45] font-sans bg-slate-100 text-base z-0"
+            _placeholder={{ opacity:1, color: 'gray.600' }}
+            className="w-full h-8 rounded-lg px-1 md:px-2 text-black font-sans bg-slate-100 text-base z-0"
+            size={width < 768? 'sm' : 'md'}
             {...props}
           />
 
@@ -40,9 +44,9 @@ export const CustomTextInput = forwardRef<
                 className=""
               >
                 {isVisible ? (
-                  <AiFillEyeInvisible className="text-[#202F45] hover:text-gray-600" />
+                  <AiFillEyeInvisible className="text-black hover:text-gray-600" />
                 ) : (
-                  <AiFillEye className="text-[#202F45] hover:text-gray-600" />
+                  <AiFillEye className="text-black hover:text-gray-600" />
                 )}
               </Button>
             </div>

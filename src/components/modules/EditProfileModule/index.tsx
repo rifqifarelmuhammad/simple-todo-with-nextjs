@@ -118,9 +118,9 @@ export const EditProfileModule: React.FC = () => {
   }
 
   return (
-    <div className="px-12 md:px-8 mx-auto max-w-[550px] w-full bg-green-400 rounded-2xl h-fit">
-      <div className="px-2 py-8 flex flex-col gap-4">
-        <h1 className="text-center text-3xl font-bold">Edit Profile</h1>
+    <div className="px-4 md:px-8 mx-auto max-w-[550px] w-full bg-green-400 rounded-2xl h-fit">
+      <div className="px-2 py-6 md:py-8 flex flex-col gap-4">
+        <h1 className="text-center text-2xl md:text-3xl font-bold">Edit Profile</h1>
 
         <div className="flex flex-col gap-2">
           <div className="flex flex-row gap-2 items-center">

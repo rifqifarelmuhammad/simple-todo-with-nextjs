@@ -19,9 +19,9 @@ export const Authentication: React.FC<AuthenticationProps> = ({
 
   return (
     <>
-      <div className="my-auto px-12 md:px-8 mx-auto max-w-[550px] w-full bg-green-400 rounded-2xl">
+      <div className="my-auto px-4 md:px-8 mx-auto max-w-[550px] w-full bg-green-400 rounded-2xl">
         <div className="px-2 py-8 flex flex-col gap-4">
-          <h1 className="text-3xl font-semibold text-center">
+          <h1 className="text-xl md:text-3xl font-semibold text-center">
             {statusType === 'LOGIN'
               ? 'Sign in to Simple Todolist'
               : 'Please fill your data!'}
@@ -38,9 +38,11 @@ export const Authentication: React.FC<AuthenticationProps> = ({
             className="bg-gray-700 hover:bg-gray-500 rounded-sm w-full py-1 text-white font-semibold h-9"
             onClick={handleChangeStatusButton}
           >
-            {statusType === 'LOGIN'
-              ? `Don't have account?`
-              : `Already have an acoount?`}
+            <p className='text-base md:text-xl'>
+              {statusType === 'LOGIN'
+                ? `Don't have account?`
+                : `Already have an acoount?`}
+            </p>
           </Button>
         </div>
       </div>

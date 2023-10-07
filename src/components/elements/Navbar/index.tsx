@@ -1,43 +1,25 @@
 import { useAuthContext } from '@contexts'
-import { CustomButton } from '../CustomButton'
-import { getImage, getToast } from '@utils'
+import { getImage } from '@utils'
 import Image from 'next/image'
-import { useRouter } from 'next/router'
+import { NavItem } from './NavItem'
+import { Bars3Icon } from '@heroicons/react/24/solid'
+import { CustomButton } from '../CustomButton'
+import { useState } from 'react'
 
 export const Navbar: React.FC = () => {
-  const { user, httpFetch, setAuthenticatedUser } = useAuthContext()
-  const router = useRouter()
+  const { user } = useAuthContext()
+  const [isCollapsed, setIsCollapsed] = useState(true)
 
-  const handleEditProfile = () => {
-    router.push('/edit-profile')
-  }
-
-  const handleLogout = async () => {
-    try {
-      const {
-        responseCode: _responseCode,
-        responseStatus: _responseStatus,
-        responseMessage: _responseMessage,
-      } = await httpFetch({
-        method: 'patch',
-        url: '/auth/logout',
-      })
-
-      localStorage.removeItem('AT')
-      setAuthenticatedUser(undefined)
-      getToast({ type: 'success', message: 'Logout Successful' })
-      router.push('/')
-    } catch (error) {
-      getToast({})
-    }
+  const handleNavPanel = () => {
+    setIsCollapsed(!isCollapsed)
   }
 
   if (user)
     return (
-      <div className="z-50 sticky inset-0 w-full bg-sky-700">
-        <div className="py-3 flex flex-row gap-4 items-center">
-          <div className="w-3/4 pl-10 flex flex-row gap-3 items-center">
-            <div className="rounded-full bg-white w-16 h-16 relative aspect-square">
+      <div className="z-50 sticky inset-0 w-full bg-sky-700 flex flex-col">
+        <div className="py-2 lg:py-3 flex flex-row gap-4 items-center">
+          <div className="w-3/4 pl-4 md:pl-6 flex flex-row gap-2 md:gap-3 items-center">
+            <div className="rounded-full bg-white w-14 lg:w-16 h-14 lg:h-16 relative aspect-square">
               <Image
                 src={getImage(user?.avatar)}
                 alt="user's avatar"
@@ -47,25 +29,25 @@ export const Navbar: React.FC = () => {
                 className="rounded-full"
               />
             </div>
-            <p className="font-semibold text-xl text-white">{user.name}</p>
+            <p className="font-semibold text-lg lg:text-xl text-white">{user.name}</p>
           </div>
 
-          <div className="absolute right-6 flex flex-row gap-2">
-            <CustomButton
-              onClick={handleEditProfile}
-              clasName="bg-blue-200 px-3 py-2"
-            >
-              <p className="text-[#202F45] font-bold">Edit Profile</p>
-            </CustomButton>
+          <div className="absolute right-4 md:right-6">
+            <div className='hidden md:flex'>
+              <NavItem />
+            </div>
 
-            <CustomButton
-              onClick={handleLogout}
-              clasName="bg-red-600 px-3 py-2"
-            >
-              Logout
+            <CustomButton onClick={handleNavPanel} clasName='w-fit'>
+              <Bars3Icon className='w-8 text-white' />
             </CustomButton>
           </div>
         </div>
+
+        {!isCollapsed && (
+          <div className='py-3 px-4'>
+            <NavItem />
+          </div>
+        )}
       </div>
     )
   else return <></>

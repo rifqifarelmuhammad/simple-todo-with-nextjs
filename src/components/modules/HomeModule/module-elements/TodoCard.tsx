@@ -85,30 +85,30 @@ export const TodoCard: React.FC<TodoCardProps> = ({
   return (
     <div
       key={todo.id}
-      className={`w-80 ${
+      className={`w-full md:w-72 xl:w-80 ${
         todo.isFinished ? 'bg-green-500' : 'bg-red-300'
-      } rounded-xl relative`}
+      } rounded-xl relative h-full`}
     >
       <div className="px-4 py-3 flex flex-col gap-2">
-        <p className="text-sm font-normal">{formattedDateTime}</p>
-        <p className="font-bold text-xl">{todo.title}</p>
+        <p className="text-xs md:text-sm font-normal">{formattedDateTime}</p>
+        <p className="font-bold text-lg md:text-xl">{todo.title}</p>
         {todo.description && (
-          <p className="font-sans font-medium">{todo.description}</p>
+          <p className="font-sans font-medium text-sm md:text-base">{todo.description}</p>
         )}
 
-        <div className="pb-6">
+        <div className="pb-8 md:pb-6">
           <div className="absolute bottom-3 right-3 flex flex-row gap-3">
             <CustomButton
               onClick={handleUpdateTodo}
-              className="bg-lime-600 px-3 py-2 rounded-md text-white"
+              className="bg-lime-600 px-2 md:px-3 py-1 md:py-2 rounded-md text-white"
             >
-              Update
+              <p className='text-sm md:text-base'>Update</p>
             </CustomButton>
             <CustomButton
               onClick={handleDeleteTodo}
-              className="bg-red-700 px-3 py-2 rounded-md text-white"
+              className="bg-red-700 px-2 md:px-3 py-1 md:py-2 rounded-md text-white"
             >
-              Delete
+              <p className='text-sm md:text-base'>Delete</p>
             </CustomButton>
           </div>
         </div>

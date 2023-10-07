@@ -10,7 +10,7 @@ export default function App({ Component, pageProps }: AppProps) {
     <ChakraProvider>
       <AuthContextProvider>
         <Navbar />
-        <div className="p-2 md:p-6 flex flex-col md:h-screen md:flex-row gap-6 bg-cyan-500 text-[#202F45] font-rFlex">
+        <div className="p-4 md:p-6 flex min-h-screen gap-6 bg-cyan-500 text-[#202F45] font-rFlex">
           <Component {...pageProps} />
         </div>
         <Toast />

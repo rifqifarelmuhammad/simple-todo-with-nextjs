@@ -14,9 +14,11 @@ import {
   ModalBody,
 } from '@chakra-ui/react'
 import { CreateTodoForm } from '../module-elements/CreateTodoForm'
+import { useWindowSize } from 'usehooks-ts'
 
 export const Home: React.FC = () => {
   const router = useRouter()
+  const { width } = useWindowSize()
   const { httpFetch } = useAuthContext()
   const [data, setData] = useState<TodoInterface[]>([])
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
@@ -55,8 +57,8 @@ export const Home: React.FC = () => {
 
   return (
     <>
-      <div className="flex flex-col gap-11 px-4 md:px-12 mx-auto max-w-[1440px] items-center z-10">
-        <h1 className="text-center text-6xl font-bold">
+      <div className="flex flex-col gap-6 md:gap-7 lg:gap-9 xl:gap-11 px-4 md:px-12 mx-auto max-w-[1440px] items-center z-10">
+        <h1 className="text-center text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold">
           Welcome To Simple Todolist
         </h1>
 
@@ -67,17 +69,17 @@ export const Home: React.FC = () => {
           Create Todo
         </Button>
 
-        <div className="grid grid-cols-3 gap-4 w-full">
+        <div className="flex flex-col items-center md:grid grid-cols-2 lg:grid-cols-3 gap-4 w-full">
           {data.map((todo) => (
             <TodoCard todos={data} setTodos={setData} todo={todo} />
           ))}
         </div>
       </div>
 
-      <Modal isOpen={isModalOpen} onClose={handleIsModalOpen}>
+      <Modal isOpen={isModalOpen} onClose={handleIsModalOpen} size={width < 768 ? 'xs' : 'md'}>
         <ModalOverlay />
 
-        <ModalContent className="flex flex-col py-6 px-6">
+        <ModalContent className="flex flex-col py-4 md:py-6 px-2 md:px-6">
           <ModalCloseButton />
 
           <ModalHeader>
