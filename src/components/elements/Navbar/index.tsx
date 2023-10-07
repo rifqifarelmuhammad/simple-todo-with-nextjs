@@ -29,22 +29,24 @@ export const Navbar: React.FC = () => {
                 className="rounded-full"
               />
             </div>
-            <p className="font-semibold text-lg lg:text-xl text-white">{user.name}</p>
+            <p className="font-semibold text-lg lg:text-xl text-white">
+              {user.name}
+            </p>
           </div>
 
           <div className="absolute right-4 md:right-6">
-            <div className='hidden md:flex'>
+            <div className="hidden md:flex">
               <NavItem />
             </div>
 
-            <CustomButton onClick={handleNavPanel} clasName='w-fit'>
-              <Bars3Icon className='w-8 text-white' />
+            <CustomButton onClick={handleNavPanel} clasName="w-fit">
+              <Bars3Icon className="w-8 text-white" />
             </CustomButton>
           </div>
         </div>
 
         {!isCollapsed && (
-          <div className='py-3 px-4'>
+          <div className="py-3 px-4">
             <NavItem />
           </div>
         )}

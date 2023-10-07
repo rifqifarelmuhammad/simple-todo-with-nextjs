@@ -93,7 +93,9 @@ export const TodoCard: React.FC<TodoCardProps> = ({
         <p className="text-xs md:text-sm font-normal">{formattedDateTime}</p>
         <p className="font-bold text-lg md:text-xl">{todo.title}</p>
         {todo.description && (
-          <p className="font-sans font-medium text-sm md:text-base">{todo.description}</p>
+          <p className="font-sans font-medium text-sm md:text-base">
+            {todo.description}
+          </p>
         )}
 
         <div className="pb-8 md:pb-6">
@@ -102,13 +104,13 @@ export const TodoCard: React.FC<TodoCardProps> = ({
               onClick={handleUpdateTodo}
               className="bg-lime-600 px-2 md:px-3 py-1 md:py-2 rounded-md text-white"
             >
-              <p className='text-sm md:text-base'>Update</p>
+              <p className="text-sm md:text-base">Update</p>
             </CustomButton>
             <CustomButton
               onClick={handleDeleteTodo}
               className="bg-red-700 px-2 md:px-3 py-1 md:py-2 rounded-md text-white"
             >
-              <p className='text-sm md:text-base'>Delete</p>
+              <p className="text-sm md:text-base">Delete</p>
             </CustomButton>
           </div>
         </div>

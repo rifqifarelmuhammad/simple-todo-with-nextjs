@@ -21,7 +21,7 @@ export const CustomTextInput = forwardRef<
 
     return (
       <div className="flex flex-col gap-1">
-        {label && <p className='text-base md:text-xl'>{label}</p>}
+        {label && <p className="text-base md:text-xl">{label}</p>}
 
         <div className={type === 'password' ? 'relative' : ''}>
           <Input
@@ -29,9 +29,9 @@ export const CustomTextInput = forwardRef<
             ref={ref}
             type={type === 'text' ? 'text' : isVisible ? 'text' : 'password'}
             placeholder={placeholder}
-            _placeholder={{ opacity:1, color: 'gray.600' }}
+            _placeholder={{ opacity: 1, color: 'gray.600' }}
             className="w-full h-8 rounded-lg px-1 md:px-2 text-black font-sans bg-slate-100 text-base z-0"
-            size={width < 768? 'sm' : 'md'}
+            size={width < 768 ? 'sm' : 'md'}
             {...props}
           />
 

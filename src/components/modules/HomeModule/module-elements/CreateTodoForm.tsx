@@ -81,7 +81,7 @@ export const CreateTodoForm: React.FC<CreateTodoProps> = ({
           isDisabled={!watch('title')}
           clasName="w-full text-white py-2 bg-cyan-600 hover:bg-cyan-500"
         >
-          <p className='text-lg md:text-xl'>Create</p>
+          <p className="text-lg md:text-xl">Create</p>
         </CustomButton>
       </div>
     </form>

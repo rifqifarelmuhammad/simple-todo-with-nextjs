@@ -105,7 +105,7 @@ export const RegistrationForm: React.FC<GeneralAuthProps> = ({
           }
           className="bg-lime-600 hover:bg-lime-500 rounded-lg w-full text-white font-semibold h-9"
         >
-          <p className='text-base md:text-xl'>
+          <p className="text-base md:text-xl">
             {!watch('name') ||
             !watch('name') ||
             !watch('password') ||

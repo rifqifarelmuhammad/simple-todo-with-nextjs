@@ -77,7 +77,7 @@ export const LoginForm: React.FC<GeneralAuthProps> = ({ setStatusType }) => {
           isDisabled={!watch('email') || !watch('password') || isLoading}
           className="rounded-lg w-full text-white font-semibold h-9 bg-lime-600 hover:bg-lime-500"
         >
-          <p className='text-base md:text-xl'>
+          <p className="text-base md:text-xl">
             {!watch('email') || !watch('password') || !isLoading
               ? 'Login'
               : 'Loading'}

@@ -38,7 +38,7 @@ export const Authentication: React.FC<AuthenticationProps> = ({
             className="bg-gray-700 hover:bg-gray-500 rounded-sm w-full py-1 text-white font-semibold h-9"
             onClick={handleChangeStatusButton}
           >
-            <p className='text-base md:text-xl'>
+            <p className="text-base md:text-xl">
               {statusType === 'LOGIN'
                 ? `Don't have account?`
                 : `Already have an acoount?`}

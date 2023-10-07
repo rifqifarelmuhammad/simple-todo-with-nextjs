@@ -76,7 +76,11 @@ export const Home: React.FC = () => {
         </div>
       </div>
 
-      <Modal isOpen={isModalOpen} onClose={handleIsModalOpen} size={width < 768 ? 'xs' : 'md'}>
+      <Modal
+        isOpen={isModalOpen}
+        onClose={handleIsModalOpen}
+        size={width < 768 ? 'xs' : 'md'}
+      >
         <ModalOverlay />
 
         <ModalContent className="flex flex-col py-4 md:py-6 px-2 md:px-6">
