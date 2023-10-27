@@ -12,4 +12,5 @@ The Simple Todo List with NestJS project's UI.
 2. Run `yarn build` and `yarn start` to run the program
 
 ## Author
+
 [Rifqi Farel Muhammad](https://github.com/rifqifarelmuhammad)
